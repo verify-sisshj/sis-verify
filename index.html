@@ -233,6 +233,11 @@
     };
   }
 
+  function formatExam(exam) {
+    // Convert Term1 → Term 1, PT1 → PT 1 etc
+    return exam.replace(/([a-zA-Z]+)(\d+)/, '$1 $2');
+  }
+
   function render() {
     const d = getParams();
     const el = document.getElementById('content');
@@ -247,23 +252,24 @@
       return;
     }
 
-    // Build info rows — show what we have
     let infoRows = `
       <div class="info-item full">
+        <div class="info-label">Student Name</div>
+        <div class="info-value">${decodeURIComponent(d.name || d.sisid)}</div>
+      </div>
+      <div class="info-item">
         <div class="info-label">SIS ID</div>
         <div class="info-value">${d.sisid}</div>
-      </div>`;
-
-    if (d.name) infoRows += `
-      <div class="info-item full">
-        <div class="info-label">Student Name</div>
-        <div class="info-value">${decodeURIComponent(d.name)}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Academic Year</div>
+        <div class="info-value">${d.year}</div>
       </div>`;
 
     if (d.grade) infoRows += `
       <div class="info-item">
         <div class="info-label">Grade</div>
-        <div class="info-value">Grade ${decodeURIComponent(d.grade)}</div>
+        <div class="info-value">${decodeURIComponent(d.grade)}</div>
       </div>`;
 
     if (d.section) infoRows += `
@@ -275,13 +281,7 @@
     if (d.exam) infoRows += `
       <div class="info-item full">
         <div class="info-label">Examination</div>
-        <div class="info-value">${decodeURIComponent(d.exam)}</div>
-      </div>`;
-
-    infoRows += `
-      <div class="info-item full">
-        <div class="info-label">Academic Year</div>
-        <div class="info-value">${d.year}</div>
+        <div class="info-value">${formatExam(decodeURIComponent(d.exam))}</div>
       </div>`;
 
     if (d.teacher) infoRows += `
